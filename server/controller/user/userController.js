@@ -4,9 +4,14 @@ const User = require('../../models/usermodel');
 const mongoose = require("mongoose");
 const Event = require("../../models/eventmodel");
 const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
 class UserController {    
     async registration(req,res){       
         try {
+            const errors = validationResult(req);
+            if(!errors.isEmpty()){
+                return res.json({message: "error"})
+            }
             const {name, email, password, role} = req.body;
             await User.findOne({email: email}).then((user)=>{
                 if(user){
