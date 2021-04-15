@@ -14,17 +14,13 @@ const UserModel = mongoose.Schema({
         type: String,
         required: true,
     },
-    roles: { 
-            type: String,
-            default: "User"
-    },    
-    events: [
+    roles: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Events"
+            type: String,
+            default: "USER",
+            ref: 'Roles'
         }
-    ]  
-    
+    ]    
 })
 const User = mongoose.model('User', UserModel);
 module.exports = User;
