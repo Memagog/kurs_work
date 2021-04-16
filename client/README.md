@@ -1,1 +1,0 @@
-This project is a web app for my university coursework
