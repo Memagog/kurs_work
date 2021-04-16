@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Login from './Components/Login/Login';
 import CreateEvent from './Components/CreateIventPage/CreateIvent';
+import Register from './Components/Registration/Register';
 function App() {
   return (
     <div>
@@ -19,7 +20,7 @@ function App() {
         <Link class="nav-link active" to="/">Home</Link>
         </li>
         <li class="nav-item">
-        <Link class="nav-link" to="/about">Profile</Link>
+        <Link class="nav-link" to="/login">Profile</Link>
         </li>
         <li class="nav-item">
         <Link  class="nav-link" to="/create">CreateEvent</Link>
@@ -42,12 +43,15 @@ function App() {
           <Route exact path="/">
            <Home/>
           </Route>
-          <Route exact path="/about">
+          <Route exact path="/login">
             <Login/>
           </Route>
           <Route exact path="/create">
             <CreateEvent/>
-          </Route>          
+          </Route>
+          <Route exact path="/register">
+           <Register/>
+          </Route>             
         </Switch>
       </div>
     </Router>
