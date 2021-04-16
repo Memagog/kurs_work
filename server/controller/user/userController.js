@@ -5,6 +5,11 @@ const mongoose = require("mongoose");
 const Event = require("../../models/eventmodel");
 const bcrypt = require('bcryptjs');
 const {validationResult} = require('express-validator');
+const jwt = require('jsonwebtoken');
+const { secretOrKey } = require("../../config/config");
+const generateJwt = (payload) => {
+    return jwt.sign(payload, secretOrKey, {expiresIn:"24h"});
+}
 class UserController {    
     async registration(req,res){       
         try {
@@ -12,7 +17,7 @@ class UserController {
             if(!errors.isEmpty()){
                 return res.json({message: "error"})
             }
-            const {name, email, password, role} = req.body;
+            const {name, email, password, roles} = req.body;
             await User.findOne({email: email}).then((user)=>{
                 if(user){
                     return res.status(400).json({message: "Пользователь с таким эмейлом уже существует"})
@@ -24,7 +29,7 @@ class UserController {
                         name: name,
                         email: email,
                         password: hashPassword,            
-                        role: role,
+                        roles: roles,
                     });
                     newUser.save();
                     return res.json({message: " Пользователь зарегистрирован!"})
@@ -37,8 +42,32 @@ class UserController {
         } 
       
     }
-    async login (req,res){
+    async login (req,res, next){
             try {
+                const {email,password} = req.body;
+                await User.findOne({email: email}).then((user)=>{
+                    if(!user){
+                        return next(ApiError.internal(`Пользователь с таким эмейлом не найден ${req.email}`))
+                    }
+                   bcrypt.compare(password, user.password).then((isValid)=>{
+                        if(!isValid){
+                            return res.status(400).json({message:"Введен неверный пароль"});
+                        }
+                        else{
+                            const payload = {
+                                id: user.id,
+                                email: user.email,
+                                password: user.password,
+                                roles: user.roles,
+                            }
+                            
+                            const token =generateJwt(payload);
+                            return res.json({token});
+                        }                        
+                    })
+                      
+                    
+                })
                 
             } catch (error) {
                 console.log(error);
@@ -54,11 +83,14 @@ class UserController {
         
     }
     async auth (req,res,next){
-        // const {id} = req.query
-        // if(!id){
-        //    return next(ApiError.badRequest(`Id is Empty`))
-        // }
-        // res.json(id)
+        const payload = {
+            id: req.body.id,
+            email: req.body.email,
+            password: req.body.password,
+            roles: req.body.roles,
+        }
+      const token = generateJwt(payload);
+      return res.json({token});
     }
 }
 
