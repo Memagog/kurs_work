@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 import Login from './Components/Login/Login';
 import CreateEvent from './Components/CreateIventPage/CreateIvent';
@@ -50,7 +51,8 @@ function App() {
           </Route>
           <Route exact path="/register">
            <Register/>
-          </Route>             
+          </Route>
+          <Redirect to="/"/>             
         </Switch>
       </div>
     </Router>
