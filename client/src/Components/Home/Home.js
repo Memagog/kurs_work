@@ -22,8 +22,7 @@ const Home = (props) => {
         
         // axios.post('')
 
-    }
-    
+    }    
         return(
             <div>
                 <form onSubmit={handleSubmit}>

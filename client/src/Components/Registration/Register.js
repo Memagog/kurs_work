@@ -1,4 +1,3 @@
-import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,7 +10,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { signupUser, userSelector, clearState } from '../../redux/feutures/User/UserSlice';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -34,7 +38,32 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register() {
   const classes = useStyles();
+  const { register, errors, handleSubmit } = useForm();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
+  const { isFetching, isSuccess, isError, errorMessage } = useSelector(
+    userSelector
+  );
+  const onSubmit = (data) => {
+    dispatch(signupUser(data))
+  };
+  useEffect(() => {    
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+  useEffect(() => {   
+      if(isSuccess) {
+        dispatch(clearState())
+        history.push('/')
+      }
+      if(isError){
+        toast.error(errorMessage);
+        dispatch(clearState());
+      }
+    
+  }, [isSuccess,isError]);  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -57,6 +86,7 @@ export default function Register() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onSubmit={handleSubmit(onSubmit)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
