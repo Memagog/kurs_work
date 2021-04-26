@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,7 +11,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import {loginUser, userSelector, clearState} from '../../redux/feutures/User/UserSlice';
+import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -34,7 +38,32 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const {register, errors, handleSubmit} = useForm();
+  const { isFetching, isSuccess, isError, errorMessage } = useSelector(
+    userSelector
+  );
+  const onSubmit = (data)=> {
+    dispatch(loginUser(data));    
+  }
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearState())
+    }
+  }, [])
+
+  useEffect(() => {
+      if(isError){
+        toast.error(errorMessage);
+        dispatch(clearState());
+      }
+      if (isSuccess) {
+        dispatch(clearState());
+        history.push('/');
+      }
+  }, [isError,isSuccess])
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -55,8 +84,10 @@ export default function Login() {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
-          />
+            autoFocus 
+            onSubmit={handleSubmit(onSubmit)}
+            method="POST"        
+          />          
           <TextField
             variant="outlined"
             margin="normal"
