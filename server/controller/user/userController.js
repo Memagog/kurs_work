@@ -17,7 +17,7 @@ class UserController {
             if(!errors.isEmpty()){
                 return res.json({message: "error"})
             }
-            const {name, email, password, roles} = req.body;
+            const {username, email, password, roles} = req.body;
             await User.findOne({email: email}).then((user)=>{
                 if(user){
                     return res.status(400).json({message: "Пользователь с таким эмейлом уже существует"})
@@ -26,7 +26,7 @@ class UserController {
                     const hashPassword = bcrypt.hashSync(password,7);
                     const newUser = new User({
                         _id: new mongoose.Types.ObjectId,
-                        name: name,
+                        name: username,
                         email: email,
                         password: hashPassword,            
                         roles: roles,
