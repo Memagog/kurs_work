@@ -15,7 +15,7 @@ class UserController {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()){
-                return res.json({message: "error"})
+                return res.status(400).json({message: "Данные введены некоректно"})
             }
             const {username, email, password, roles} = req.body;
             await User.findOne({email: email}).then((user)=>{
@@ -32,7 +32,15 @@ class UserController {
                         roles: roles,
                     });
                     newUser.save();
-                    return res.json({message: " Пользователь зарегистрирован!"})
+                    const payload = {
+                        id: newUser._id,
+                        email: newUser.email,
+                        password: newUser.password,
+                        roles: newUser.roles,
+                    }
+                    const token =generateJwt(payload);
+                    return res.json({token});
+                    // return res.json({message: " Пользователь зарегистрирован!"})
                 }
             })           
            
@@ -47,7 +55,7 @@ class UserController {
                 const {email,password} = req.body;
                 await User.findOne({email: email}).then((user)=>{
                     if(!user){
-                        return next(ApiError.internal(`Пользователь с таким эмейлом не найден ${req.email}`))
+                        return res.status(400).json({message:"Пользователь с таким эмейлом не найден"});
                     }
                    bcrypt.compare(password, user.password).then((isValid)=>{
                         if(!isValid){
@@ -56,9 +64,10 @@ class UserController {
                         else{
                             const payload = {
                                 id: user.id,
+                                username: user.name,
                                 email: user.email,
                                 password: user.password,
-                                roles: user.roles,
+                                roles: user.roles              
                             }
                             
                             const token =generateJwt(payload);

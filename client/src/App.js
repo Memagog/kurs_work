@@ -1,62 +1,29 @@
+import React,{useContext,useState,useEffect} from 'react'
+import { observer } from "mobx-react-lite";
+import { BrowserRouter as Router} from "react-router-dom";
+import { Context } from ".";
+import Navbar from "./comp/Navbar";
+import AppRouter from './comp/Routing/AppRouter';
+import { check } from './http/userAPI';
 
-import './App.css';
-import Home from './Components/Home/Home';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import Login from './Components/Login/Login';
-import CreateEvent from './Components/CreateIventPage/CreateIvent';
-import Register from './Components/Registration/Register';
-function App() {
-  return (
+const App = observer(() => {
+  const {user} = useContext(Context);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+   check().then(data=> {
+    //  user.setUser(true)
+     user.setIsAuth(true)
+   }).finally( ()=> setLoading(false))
+  }, []);
+  return (  
     <div>
        <Router>
-      <div>        
-        <ul class="nav">
-        <li class="nav-item">
-        <Link class="nav-link active" to="/">Home</Link>
-        </li>
-        <li class="nav-item">
-        <Link class="nav-link" to="/login">Profile</Link>
-        </li>
-        <li class="nav-item">
-        <Link  class="nav-link" to="/create">CreateEvent</Link>
-        </li>
-        <li class="nav-item">
-        <Link class="nav-link disabled" href="/create">Disabled</Link>
-        </li>
-
-          {/* <nav class="navbar navbar-light bg-light">
-          <div class="container-fluid">          
-            <form class="d-flex">
-              <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-          </nav> */}
-      </ul>
-        <hr />
-        <Switch>
-          <Route exact path="/">
-           <Home/>
-          </Route>
-          <Route exact path="/login">
-            <Login/>
-          </Route>
-          <Route exact path="/create">
-            <CreateEvent/>
-          </Route>
-          <Route exact path="/register">
-           <Register/>
-          </Route>             
-        </Switch>
-      </div>
-    </Router>
+         <Navbar/>
+         <AppRouter/>  
+       </Router>
     </div>
   );
-}
+})
 
 export default App;

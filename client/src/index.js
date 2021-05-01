@@ -1,12 +1,23 @@
-import React from 'react';
+import React,{createContext} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import UserStore from './mobX/store/UserStore';
+import EventsStore from './mobX/store/EventsStore';
+import TypesStore from './mobX/store/TypesStore';
+import ParametersStore from './mobX/store/ParameterStore';
+export const Context = createContext(null)
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
+  <React.StrictMode> 
+    <Context.Provider value={{
+      user: new UserStore(),
+      events: new EventsStore(),
+      types: new TypesStore(),
+      param: new ParametersStore(),
+    }}>
+      <App />   
+    </Context.Provider>    
   </React.StrictMode>,
   document.getElementById('root')
 );
