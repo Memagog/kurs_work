@@ -5,12 +5,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import { Context } from '../index';
 import { observer } from 'mobx-react-lite';
 import { EVENTS_LIST, LOGIN_ROUTE, PROFILE } from '../utils/config-routs';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -29,10 +28,25 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = observer(() => {
   const classes = useStyles();
   const {user} = useContext(Context)
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory();
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleProfile = () => {
+    history.push(PROFILE);
+  }
+  const handleLogin = () => {
+    history.push(LOGIN_ROUTE);
+  }
+  const handleLogout = () => {
+      user.setIsAuth(false);
+  }
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <div className={classes.root}>
-      
+    <div className={classes.root}>      
       <AppBar position="static" color="secondary">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -45,36 +59,35 @@ const Navbar = observer(() => {
                 <Link to={PROFILE} className={classes.linkColor}>MyProfile</Link>
           </Typography>
           <Typography variant="h6" className={classes.title} >
-                <Link to="/login" className={classes.linkColor}>DDDD </Link>
-          </Typography>
-          {user.isAuth ?
-            <div>
+                <Link to={LOGIN_ROUTE} className={classes.linkColor}>DDDD </Link>
+          </Typography>          
+           <div>
               <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"               
-                color="inherit"
-              >
-                
-                <AccountCircle onClick={()=>user.setIsAuth(false)}/>
-              </IconButton>
-              <Link to={PROFILE} className={classes.linkColor}>My Profile</Link>
-            </div>
-            :           
-                <div>                       
-                    <IconButton
                         aria-label="account of current user"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"               
                         color="inherit"
-                    >
-                    
-                    <VpnKeyIcon onClick={()=>user.setIsAuth(true)}/>
-                    </IconButton>
-                    <Link to={LOGIN_ROUTE} className={classes.linkColor}>Register</Link>
-                </div>
-            
-          }
+                        onClick={handleClick}
+                    >          
+                  Menu
+                </IconButton>            
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {
+                user.isAuth ? <MenuItem onClick={handleClose}><Button onClick={handleLogout}>Logout</Button></MenuItem>:
+                              <MenuItem onClick={handleClose}><Button onClick={handleLogin}>Login</Button></MenuItem>
+                             
+                } 
+                <MenuItem onClick={handleClose}><Button onClick={handleProfile}>My Profile</Button></MenuItem>
+                {/* <MenuItem onClick={handleClose}><Button onClick={handleLogin}>My account</Button></MenuItem>*/}
+                
+              </Menu>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

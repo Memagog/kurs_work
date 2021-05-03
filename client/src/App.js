@@ -12,10 +12,11 @@ const App = observer(() => {
 
   useEffect(() => {
    check().then(data=> {
-    //  user.setUser(true)
+     console.log(loading)
+     user.setUser(data)
      user.setIsAuth(true)
    }).finally( ()=> setLoading(false))
-  }, []);
+  },[]);
   return (  
     <div>
        <Router>

@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 app.use(cors());
 app.use(express.json());
 app.use('/api', router);
-app.use(errorHandler);
+// app.use(errorHandler);
 const PORT = process.env.PORT || 4000;
 const start = async () =>{
     try {

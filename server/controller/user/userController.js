@@ -91,7 +91,7 @@ class UserController {
         }
         
     }
-    async auth (req,res,next){
+    async auth (req,res){
         const payload = {
             id: req.body.id,
             email: req.body.email,

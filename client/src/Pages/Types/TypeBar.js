@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const TypeBar = observer(() => {    
     const {types} = useContext(Context);
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([0]);
+    const [checked, setChecked] = useState([0]);
 
         const handleToggle = (value) => () => {
             const currentIndex = checked.indexOf(value);

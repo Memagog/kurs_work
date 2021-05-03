@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import box from '../../resources/images/box.jpg'
 import { useHistory } from 'react-router';
 import {EVENTS_LIST } from '../../utils/config-routs';
 const useStyles = makeStyles({
@@ -25,11 +24,11 @@ const EventsItem = observer(({event}) => {
     const history = useHistory();
     // const v = history.push(EVENTSINFO+'/'+ event.id);
     return (
-        <Card className={classes.root} onClick={()=>history.push(EVENTS_LIST+'/'+ event.id)}>
+        <Card className={classes.root} onClick={()=>history.push(EVENTS_LIST+'/'+ event._id)}>
             <CardActionArea>
                 <CardMedia
                 className={classes.media}
-                image={box}
+                image={event.img}
                 title="Contemplative Reptile"
                 />
                 <CardContent>
