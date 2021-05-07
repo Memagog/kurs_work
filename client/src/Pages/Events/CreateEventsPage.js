@@ -1,7 +1,7 @@
 import React, {useEffect, useState,useContext} from 'react'
 import {Button, Grid, TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import jwt from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import { Context } from '../..';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { createEvent } from '../../http/eventApi';
@@ -35,14 +35,7 @@ export default function CreateEventsPage() {
           social: "",
           img: "",
       })
-    const newEvent = async () => {
-        try{
-          const event = await createEvent(state.title,state.description,state.price,state.profession,state.location,state.people,author,state.phone,state.social,state.img)
-          console.log(event);     
-        } catch (error) {
-          setMessage(error.response.data.message)
-        }
-    }
+   
     const handleChange = e => {
         setState({
           ...state,
@@ -52,14 +45,10 @@ export default function CreateEventsPage() {
     useEffect(() => {
       try {
         const token = localStorage.getItem('token')
-        const user_token = jwt(token)
-        if(user_token){
-          setData(user_token)
-          console.log(user_token)
-          const author = data.id;
-          setAuthor(author)                 
-        }
-        
+        const user_token = jwt_decode(token)              
+        console.log(user_token.id)
+        setAuthor(user_token.id) 
+        setData(user_token.username)
       } catch (error) {
         console.log("Error in the check")
       }
@@ -70,7 +59,14 @@ export default function CreateEventsPage() {
       console.log(state);
       console.log(author)
     }
-    
+    const newEvent = async () => {
+      try{
+        const event = await createEvent(state.title,state.description,state.price,state.profession,state.location,state.people,author,state.phone,state.social,state.img)
+        console.log(event);     
+      } catch (error) {
+        setMessage(error.response.data.message)
+      }
+    }
     return (
         <div>
           <Grid container direction="row" justify="flex-start" alignItems="flex-start" >

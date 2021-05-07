@@ -20,3 +20,9 @@ export const getAuthor = async(id) => {
     const {data} = await host.get('api/events/author/?id=' + id)
     return data
 } 
+
+export const myEvents = async (id) => {
+    const data = await host.get('api/user/events/?id=' + id)
+    console.log(data +  " - " + id)
+    return data
+}

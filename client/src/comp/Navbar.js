@@ -8,8 +8,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Link,useHistory } from 'react-router-dom';
 import { Context } from '../index';
 import { observer } from 'mobx-react-lite';
-import { EVENTS_LIST, LOGIN_ROUTE, PROFILE } from '../utils/config-routs';
+import { EVENTS_LIST, HOME_ROUTES, LOGIN_ROUTE, PROFILE } from '../utils/config-routs';
 import { Button, Menu, MenuItem } from '@material-ui/core';
+import {FiGift} from 'react-icons/fi';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -50,17 +51,21 @@ const Navbar = observer(() => {
       <AppBar position="static" color="secondary">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+           <FiGift/>
           </IconButton>
           <Typography variant="h4" className={classes.title}>
                 <Link to={EVENTS_LIST} className={classes.linkColor}>Events</Link>
           </Typography>
+          <Typography variant="h6" className={classes.title} >
+                <Link to={HOME_ROUTES} className={classes.linkColor}>Home</Link>
+          </Typography>
           <Typography variant="h6" className={classes.title}>
-                <Link to={PROFILE} className={classes.linkColor}>MyProfile</Link>
+                <Link to={PROFILE} className={classes.linkColor}>My Profile</Link>
           </Typography>
           <Typography variant="h6" className={classes.title} >
-                <Link to={LOGIN_ROUTE} className={classes.linkColor}>DDDD </Link>
-          </Typography>          
+                <Link to={EVENTS_LIST} className={classes.linkColor}>Find jobs</Link>
+          </Typography>   
+                   
            <div>
               <IconButton
                         aria-label="account of current user"

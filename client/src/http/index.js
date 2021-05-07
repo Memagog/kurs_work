@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PATH } from '../utils/api_url';
+import { PATH } from './api_url';
 
 const host = axios.create({
     baseURL: PATH

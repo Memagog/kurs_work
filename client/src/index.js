@@ -7,6 +7,7 @@ import UserStore from './mobX/store/UserStore';
 import EventsStore from './mobX/store/EventsStore';
 import TypesStore from './mobX/store/TypesStore';
 import ParametersStore from './mobX/store/ParameterStore';
+import resumeStore from './mobX/store/resumeStore';
 export const Context = createContext(null)
 ReactDOM.render(
   <React.StrictMode> 
@@ -15,6 +16,7 @@ ReactDOM.render(
       events: new EventsStore(),
       types: new TypesStore(),
       param: new ParametersStore(),
+      resume: new resumeStore(),
     }}>
       <App />   
     </Context.Provider>    

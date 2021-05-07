@@ -12,6 +12,10 @@ import UserData from "./UserData";
 import CakeIcon from '@material-ui/icons/Cake';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import CreateEventsPage from "../Events/CreateEventsPage";
+import UserEvents from "./UserEventsList";
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+
+import ResumeList from "./ResumeList";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -73,6 +77,7 @@ export default function ProfileNavBar() {
         >
           <Tab icon={<PersonPinIcon />} aria-label="person" {...a11yProps(0)} />
           <Tab icon={<CakeIcon/>} aria-label="cake" {...a11yProps(1)} />
+         
           <Tab
             icon={<FavoriteIcon />}
             aria-label="favorite"
@@ -82,17 +87,22 @@ export default function ProfileNavBar() {
             icon={<NoteAddIcon/>}
             aria-label="shopping"
             {...a11yProps(3)}
-          />       
+          />  
+          <Tab 
+            icon={<EmojiPeopleIcon/>}
+            aria-label="shopping"
+            {...a11yProps(4)}
+            />    
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <UserData></UserData>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+          <ResumeList></ResumeList>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+       <UserEvents></UserEvents>
       </TabPanel>     
       <TabPanel value={value} index={3}>
         <CreateEventsPage></CreateEventsPage>

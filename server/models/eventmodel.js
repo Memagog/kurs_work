@@ -13,8 +13,11 @@ const eventSchema = mongoose.Schema({
     },
     phone: String,
     social: String,
-    img: String
-
+    img: String,
+    time: {
+        type: Date,
+        default: Date.now
+    }
   });;
 
 const Event = mongoose.model('Events', eventSchema);

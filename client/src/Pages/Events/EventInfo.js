@@ -10,6 +10,7 @@ import TelegramIcon from '@material-ui/icons/Telegram';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import MailIcon from '@material-ui/icons/Mail';
+import moduleName from '../../resources/images/zaika.jpg';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -34,9 +35,25 @@ const useStyles = makeStyles((theme) => ({
       fontSize: 23,
       borderRadius: 25,
       paddingLeft: 20 
-  },
-  
-
+  }, 
+ fone: {
+    backgroundImage: `url(https://a.allegroimg.com/original/119957/224782944da1baf01ad2c1f8e57b/Naklejka-scienna-KROLICZKI-balony-chmurki-XXXL)`,
+    backgroundSize: 300,                 
+    width: "100%",
+    height: "100%",
+    backgroundRepeat: 'repeat-y',
+    borderRadius: ' 0% 0% 10% 0%',
+    boxShadow: "-5px -5px 5px -5px  rgba(244, 66, 137, 0.32) inset"
+ },
+ fone1: {
+  backgroundImage: `url(https://a.allegroimg.com/original/119957/224782944da1baf01ad2c1f8e57b/Naklejka-scienna-KROLICZKI-balony-chmurki-XXXL)`,
+  backgroundSize: 300,                 
+  width: "100%",
+  height: "100%",
+  backgroundRepeat: 'repeat-y',
+  borderRadius: ' 0% 0% 0% 20%',
+  boxShadow: "-5px 5px 5px -5px rgba(244, 66, 137, 0.6)"
+}
 }));
 
 export default function EventInfo() {
@@ -53,25 +70,25 @@ export default function EventInfo() {
   },[])
   useEffect(()=>{
         getAuthor(userId.id).then((data)=>{
+          console.log(data)
           setAuthor(data.name)
           setEmail(data.email)
         })   
   },[])
   // console.log(event);
-  const handleSocial=()=>{
-    if(social){
-      setSocial(false)
-    }
-    else setSocial(true)
+  const handleSocial=()=>{   
+      setSocial(!social)   
   }
   return (
     
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={6}>
         <Grid item xs={2}>
-          <Paper className={classes.paper}>xs=3</Paper>
+          <div className={classes.fone}>
+            
+          </div>
         </Grid>
-        <Grid item xs={6} >
+        <Grid item xs={8} >
             <Grid  container  spacing={3} direction="row"  justify="center" alignItems="flex-start" className={classes.content}>                 
                    <Grid item xs={4}>
                    <Typography variant="h4" gutterBottom>{event.title}</Typography>
@@ -137,7 +154,9 @@ export default function EventInfo() {
             </Grid>             
         </Grid>        
         <Grid item xs={2}>
-          <Paper className={classes.paper}>xs=3</Paper>
+          <div className={classes.fone1}>
+            
+          </div>
         </Grid>
       </Grid>
     </div>

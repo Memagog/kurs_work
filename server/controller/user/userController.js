@@ -82,12 +82,14 @@ class UserController {
                 console.log(error);
             }
     }
-    async getAllUsers(req,res){
+    async getMyEvents(req,res){
+        const author_id = req.query.id
         try {
-            const myevents = await Event.find({author: req.body.author})        
+            const myevents = await Event.find({author: author_id})        
             return res.json({myevents});
         } catch (error) {
             console.log(error);
+            return res.json({})
         }
         
     }
